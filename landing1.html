@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>NovaFlow — Build Faster</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+:root{
+  --bg:#07111f;
+  --panel:#0f1b2d;
+  --soft:#17263d;
+  --line:#24344d;
+  --text:#ecf3ff;
+  --muted:#93a4bf;
+  --primary:#7c3aed;
+  --secondary:#06b6d4;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  overflow-x:hidden;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+.container{
+  width:min(1200px,90%);
+  margin:auto;
+}
+nav{
+  position:fixed;
+  width:100%;
+  top:0;
+  left:0;
+  z-index:1000;
+  backdrop-filter:blur(12px);
+  background:rgba(7,17,31,.7);
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.nav-inner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:1.2rem 0;
+}
+
+.brand{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.5rem;
+  font-weight:700;
+}
+
+.brand span{
+  color:var(--secondary);
+}
+
+.nav-links{
+  display:flex;
+  gap:2rem;
+  list-style:none;
+}
+
+.nav-links a{
+  text-decoration:none;
+  color:var(--muted);
+  transition:.3s;
+  font-size:.95rem;
+}
+
+.nav-links a:hover{
+  color:#fff;
+}
+
+.nav-btn{
+  text-decoration:none;
+  color:white;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  padding:.9rem 1.5rem;
+  border-radius:12px;
+  font-weight:600;
+}
+
+.hero{
+  padding-top:150px;
+  min-height:100vh;
+  position:relative;
+}
+
+.glow{
+  position:absolute;
+  width:500px;
+  height:500px;
+  background:radial-gradient(circle,var(--primary),transparent 70%);
+  opacity:.25;
+  filter:blur(80px);
+  top:-100px;
+  right:-100px;
+}
+
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:4rem;
+  align-items:center;
+}
+
+.hero-text small{
+  display:inline-block;
+  background:rgba(124,58,237,.15);
+  border:1px solid rgba(124,58,237,.4);
+  color:#c4b5fd;
+  padding:.6rem 1rem;
+  border-radius:999px;
+  margin-bottom:2rem;
+}
+
+.hero-text h1{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(3rem,7vw,6rem);
+  line-height:1;
+  margin-bottom:1.5rem;
+}
+
+.hero-text h1 span{
+  color:var(--secondary);
+}
+
+.hero-text p{
+  color:var(--muted);
+  font-size:1.1rem;
+  line-height:1.8;
+  max-width:550px;
+  margin-bottom:2rem;
+}
+
+.hero-actions{
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+
+.primary-btn,
+.secondary-btn{
+  text-decoration:none;
+  padding:1rem 1.7rem;
+  border-radius:14px;
+  transition:.3s;
+  font-weight:600;
+}
+
+.primary-btn{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:white;
+}
+
+.secondary-btn{
+  border:1px solid var(--line);
+  color:white;
+}
+
+.secondary-btn:hover{
+  background:var(--soft);
+}
+
+.hero-card{
+  background:linear-gradient(180deg,#132238,#0d1627);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:30px;
+  padding:2rem;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,transparent,rgba(255,255,255,.04));
+}
+
+.dashboard{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1rem;
+}
+
+.widget{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:20px;
+  padding:1rem;
+  min-height:140px;
+}
+
+.big-widget{
+  grid-column:span 2;
+  min-height:180px;
+}
+
+.bar{
+  height:10px;
+  background:rgba(255,255,255,.08);
+  border-radius:999px;
+  margin-bottom:1rem;
+  overflow:hidden;
+}
+
+.bar::after{
+  content:'';
+  display:block;
+  width:70%;
+  height:100%;
+  background:linear-gradient(90deg,var(--secondary),var(--primary));
+}
+.stats{
+  padding:4rem 0;
+}
+
+.stats-wrap{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1rem;
+}
+
+.stat-box{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:2rem;
+}
+
+.stat-box h2{
+  font-size:2.5rem;
+  margin-bottom:.5rem;
+  font-family:'Space Grotesk',sans-serif;
+}
+
+.stat-box p{
+  color:var(--muted);
+}
+
+
+.features{
+  padding:6rem 0;
+}
+
+.section-title{
+  text-align:center;
+  margin-bottom:4rem;
+}
+
+.section-title h2{
+  font-size:3rem;
+  font-family:'Space Grotesk',sans-serif;
+  margin-bottom:1rem;
+}
+
+.section-title p{
+  color:var(--muted);
+}
+
+.bento{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-auto-rows:260px;
+  gap:1.2rem;
+}
+
+.box{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:2rem;
+  transition:.35s;
+  position:relative;
+  overflow:hidden;
+}
+
+.box:hover{
+  transform:translateY(-8px);
+  border-color:rgba(124,58,237,.5);
+}
+
+.box.large{
+  grid-column:span 2;
+}
+
+.box.tall{
+  grid-row:span 2;
+}
+
+.box h3{
+  font-size:1.5rem;
+  margin-bottom:1rem;
+}
+
+.box p{
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.pricing{
+  padding:6rem 0;
+}
+
+.price-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+}
+
+.price-card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:2.5rem;
+}
+
+.price-card.active{
+  background:linear-gradient(180deg,#1a2a45,#101827);
+  transform:scale(1.03);
+}
+
+.price-card h4{
+  margin-bottom:1rem;
+  color:var(--secondary);
+}
+
+.price{
+  font-size:4rem;
+  font-family:'Space Grotesk',sans-serif;
+  margin-bottom:1rem;
+}
+
+.price-card ul{
+  list-style:none;
+  margin:2rem 0;
+}
+
+.price-card li{
+  margin-bottom:1rem;
+  color:var(--muted);
+}
+
+.price-card a{
+  display:block;
+  text-align:center;
+  text-decoration:none;
+  padding:1rem;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:white;
+  font-weight:600;
+}
+
+
+
+.cta{
+  padding:7rem 0;
+}
+
+.cta-box{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  padding:5rem;
+  border-radius:40px;
+  text-align:center;
+}
+
+.cta-box h2{
+  font-size:3rem;
+  margin-bottom:1rem;
+  font-family:'Space Grotesk',sans-serif;
+}
+
+.cta-box p{
+  max-width:700px;
+  margin:auto;
+  line-height:1.8;
+  margin-bottom:2rem;
+}
+
+.cta-box a{
+  display:inline-block;
+  text-decoration:none;
+  background:white;
+  color:black;
+  padding:1rem 2rem;
+  border-radius:14px;
+  font-weight:700;
+}
+
+
+footer{
+  border-top:1px solid rgba(255,255,255,.06);
+  padding:2rem 0;
+}
+
+.footer-wrap{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.footer-wrap p{
+  color:var(--muted);
+}
+
+
+
+@media(max-width:950px){
+
+.hero-grid,
+.stats-wrap,
+.bento,
+.price-grid{
+  grid-template-columns:1fr;
+}
+
+.hero{
+  padding-top:120px;
+}
+
+.nav-links{
+  display:none;
+}
+
+.box.large,
+.box.tall{
+  grid-column:span 1;
+  grid-row:span 1;
+}
+
+.cta-box{
+  padding:3rem 2rem;
+}
+
+.cta-box h2{
+  font-size:2rem;
+}
+
+.footer-wrap{
+  flex-direction:column;
+  gap:1rem;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="container nav-inner">
+
+    <div class="brand">
+      Nova<span>Flow</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="#">Features</a></li>
+      <li><a href="#">Analytics</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+
+    <a href="#" class="nav-btn">Launch App</a>
+
+  </div>
+</nav>
+
+<section class="hero">
+
+<div class="glow"></div>
+
+<div class="container hero-grid">
+
+  <div class="hero-text">
+
+    <small>⚡ AI Powered Workflow Platform</small>
+
+    <h1>
+      Build digital
+      products <span>10x faster</span>
+    </h1>
+
+    <p>
+      NovaFlow helps startups, agencies, and creators manage projects,
+      automate workflows, and scale operations from one modern dashboard.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#" class="primary-btn">Start Free</a>
+      <a href="#" class="secondary-btn">View Demo</a>
+    </div>
+
+  </div>
+
+  <div class="hero-card">
+
+    <div class="dashboard">
+
+      <div class="widget big-widget">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+
+      <div class="widget">
+        <div class="bar"></div>
+      </div>
+
+      <div class="widget">
+        <div class="bar"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</section>
+
+<section class="stats">
+
+<div class="container">
+
+<div class="stats-wrap">
+
+<div class="stat-box">
+<h2>120K+</h2>
+<p>Active users worldwide</p>
+</div>
+
+<div class="stat-box">
+<h2>98%</h2>
+<p>Customer satisfaction</p>
+</div>
+
+<div class="stat-box">
+<h2>4.9★</h2>
+<p>Average product rating</p>
+</div>
+
+<div class="stat-box">
+<h2>24/7</h2>
+<p>Realtime cloud sync</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="features">
+
+<div class="container">
+
+<div class="section-title">
+<h2>Modern tools for modern teams</h2>
+<p>
+Everything you need to manage, collaborate, and grow faster.
+</p>
+</div>
+
+<div class="bento">
+
+<div class="box large">
+<h3>Realtime AI Collaboration</h3>
+<p>
+Brainstorm ideas, assign tasks, and collaborate instantly with
+your team using intelligent automation and live syncing.
+</p>
+</div>
+
+<div class="box">
+<h3>Analytics</h3>
+<p>
+Track growth, engagement, and conversion data with smart reports.
+</p>
+</div>
+
+<div class="box tall">
+<h3>Automation Engine</h3>
+<p>
+Create custom automations that save hours every week without coding.
+</p>
+</div>
+
+<div class="box">
+<h3>Cloud Security</h3>
+<p>
+Enterprise-grade encryption and advanced user permissions.
+</p>
+</div>
+
+<div class="box large">
+<h3>Visual Workflow Builder</h3>
+<p>
+Drag-and-drop pipelines help your team organize operations faster.
+</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="pricing">
+
+<div class="container">
+
+<div class="section-title">
+<h2>Flexible pricing for every stage</h2>
+<p>Choose a plan that scales with your business.</p>
+</div>
+
+<div class="price-grid">
+
+<div class="price-card">
+<h4>Starter</h4>
+<div class="price">$0</div>
+
+<ul>
+<li>3 Projects</li>
+<li>Basic Analytics</li>
+<li>Email Support</li>
+</ul>
+
+<a href="#">Get Started</a>
+</div>
+
+<div class="price-card active">
+<h4>Growth</h4>
+<div class="price">$29</div>
+
+<ul>
+<li>Unlimited Projects</li>
+<li>Advanced Automation</li>
+<li>Priority Support</li>
+</ul>
+
+<a href="#">Start Trial</a>
+</div>
+
+<div class="price-card">
+<h4>Enterprise</h4>
+<div class="price">$99</div>
+
+<ul>
+<li>Dedicated Infrastructure</li>
+<li>Unlimited Members</li>
+<li>Custom Integrations</li>
+</ul>
+
+<a href="#">Contact Sales</a>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="cta">
+
+<div class="container">
+
+<div class="cta-box">
+
+<h2>Start building smarter today</h2>
+
+<p>
+Join thousands of fast-growing businesses already using NovaFlow
+to automate workflows and scale operations globally.
+</p>
+
+<a href="#">Create Free Account</a>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+
+<div class="container footer-wrap">
+
+<p>© 2026 NovaFlow. All rights reserved.</p>
+
+<p>Designed for next-generation startups.</p>
+
+</div>
+
+</footer>
+
+</body>
+</html>
